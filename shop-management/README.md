@@ -1,73 +1,134 @@
-# React + TypeScript + Vite
+# 店務運營管理系統
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+這是一個用於管理店務運營的 Web 應用程式，主要功能包括客戶清單管理和訂製品管理。
 
-Currently, two official plugins are available:
+## 功能特色
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 1. 客戶清單管理
+- 顯示所有客戶資料
+- 搜尋功能：可透過公司名稱、統編或系統位置進行搜尋
+- 顯示客戶的詳細資訊（公司名稱、統編、系統位置、聯絡人、電話等）
 
-## React Compiler
+### 2. 訂製品管理
+- **新增訂製品**：階層式選擇流程，根據產品類型逐步引導建檔
+  - 支援的產品類型：出風口、集風箱、線型風箱、線型迴風版
+  - 根據不同類型顯示對應的配置選項（材質、顏色、規格等）
+  - 自動計算價格並顯示廠商資訊
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **訂製品列表**：
+  - 顯示所有訂製品
+  - 搜尋和篩選功能（按客戶、類別、狀態等）
+  - 編輯和刪除功能
 
-## Expanding the ESLint configuration
+- **訂製品詳細資訊**：
+  - 下訂功能：記錄下訂日期
+  - 到貨功能：記錄到貨日期
+  - 建立商品：顯示價格計算、廠商、系統位置等資訊（供複製到其他系統使用）
+  - 取貨功能：記錄取貨日期
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 技術棧
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **前端框架**：React 19 + TypeScript
+- **建置工具**：Vite
+- **路由**：React Router v7
+- **樣式**：Tailwind CSS v4
+- **資料存儲**：localStorage（瀏覽器本地存儲）
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 安裝與使用
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 前置需求
+- Node.js 18+
+- npm 或 yarn
+
+### 安裝步驟
+
+1. 安裝依賴：
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. 啟動開發伺服器：
+```bash
+npm run dev
 ```
+
+3. 在瀏覽器中開啟：
+```
+http://localhost:5173
+```
+
+### 登入資訊
+- 密碼：`sk8243`
+
+### 建置生產版本
+
+```bash
+npm run build
+```
+
+建置後的檔案會在 `dist` 目錄中。
+
+### 預覽生產版本
+
+```bash
+npm run preview
+```
+
+## 資料說明
+
+### 假資料
+系統已預先載入假資料，包括：
+- 5 個假客戶
+- 2 個假訂製品
+
+### 資料存儲
+所有資料都存儲在瀏覽器的 localStorage 中，這意味著：
+- 資料只存在於當前瀏覽器
+- 清除瀏覽器資料會導致資料遺失
+- 重新載入頁面會保留假資料（如果 localStorage 為空）
+
+### CSV 匯入（未來功能）
+未來版本將支援透過 CSV 檔案匯入客戶資料。
+
+## 專案結構
+
+```
+src/
+├── components/        # React 組件
+│   ├── Layout.tsx    # 主布局組件
+│   └── ProtectedRoute.tsx  # 受保護路由組件
+├── pages/            # 頁面組件
+│   ├── Login.tsx     # 登入頁面
+│   ├── Customers.tsx # 客戶清單頁面
+│   ├── Products.tsx  # 訂製品列表頁面
+│   ├── NewProduct.tsx # 新增訂製品頁面
+│   └── ProductDetail.tsx # 訂製品詳細頁面
+├── utils/            # 工具函數
+│   ├── storage.ts    # localStorage 操作
+│   ├── priceCalculator.ts # 價格計算
+│   └── mockData.ts   # 假資料
+├── types.ts          # TypeScript 類型定義
+├── App.tsx           # 主應用程式組件
+└── main.tsx          # 應用程式入口點
+```
+
+## 價格計算規則
+
+### 出風口
+- **線型無框 ABS**：$360/米
+- **線型鋁製**：$580/米
+- **有框/格柵 ABS**：(長度+寬度) X 36 或 55
+
+### 集風箱、線型風箱、線型迴風版
+- 成本價 X 1.45（成本$288，售價都算$400）
+
+## 開發說明
+
+### 修改假資料
+編輯 `src/utils/mockData.ts` 檔案來修改或新增假資料。
+
+### 修改價格計算規則
+編輯 `src/utils/priceCalculator.ts` 檔案來修改價格計算邏輯。
+
+## 授權
+此專案為私有專案，僅供內部使用。
